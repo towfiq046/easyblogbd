@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% set active_page = 'register' %}
+
+{% block content %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xxl-4 col-xl-5 col-lg-6 col-md-7 col-sm-8">
+                <h1 class="mb-5 text-center">{{ _('Register') }}</h1>
+                {% from "_form_helper.html" import render_field %}
+                <form action="" method="post" novalidate>
+                    {{ form.hidden_tag() }}
+                    {{ render_field(form.username, 'form-control rounded-pill', 'is-invalid', placeholder='john doe') }}
+                    {{ render_field(form.email, 'form-control rounded-pill', 'is-invalid', placeholder='john@example.com') }}
+                    {{ render_field(form.password, 'form-control rounded-pill', 'is-invalid', placeholder='secret') }}
+                    {{ render_field(form.confirm, 'form-control rounded-pill', 'is-invalid', placeholder='secret') }}
+                    {{ form.submit(class='form-control btn btn-outline-primary rounded-pill mt-3') }}
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

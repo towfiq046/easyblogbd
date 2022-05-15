@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% set active_page = 'index' %}
+
+{% block content %}
+    <section class="container">
+        <div class="row justify-content-center">
+            <div class="col mb-5">
+                <h1 class="text-center mb-5">{{ _('Hi, %(username)s!', username=current_user.username|capitalize) }} </h1>
+                {% from "_form_helper.html" import render_field %}
+                <form action="" method="post" novalidate>
+                    {{ form.hidden_tag() }}
+                    {{ form.post(class='form-control', style="height: 100px") }}
+                    {% if form.post.errors %}
+                        <div class="text-danger">
+                            {% for error in form.post.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    {{ form.submit(class='btn btn-outline-primary rounded-pill mt-3') }}
+                </form>
+            </div>
+        </div>
+        {% for post in posts %}
+            {% include '_post.html' %}
+        {% endfor %}
+        {% from "_pagination_helper.html" import render_pagination %}
+        {{ render_pagination(pagination, 'index', prev_url, next_url) }}
+    </section>
+
+{% endblock %}

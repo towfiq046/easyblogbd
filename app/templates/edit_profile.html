@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <section class="container">
+        <div class="row justify-content-center">
+            <div class="col-6">
+                <h1 class="text-center mb-5">{{ _('Edit Your Profile.') }}</h1>
+                {% from "_form_helper.html" import render_field %}
+                <form action="" method="post" novalidate>
+                    {{ form.hidden_tag() }}
+                    {{ render_field(form.username, 'form-control rounded-pill', 'is-invalid', placeholder='john doe') }}
+                    {{ render_field(form.about_me, 'form-control rounded-pill', 'is-invalid', placeholder='john doe') }}
+                    {{ form.submit(class='form-control btn btn-outline-primary rounded-pill mt-3') }}
+                </form>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
