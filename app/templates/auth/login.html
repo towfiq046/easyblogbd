@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% set active_page = 'login' %}
+{% set active_page = 'auth.login' %}
 
 {% block content %}
     <div class="container">
@@ -20,11 +20,11 @@
                 <div class="mt-5">
                     {{ _('Forgot Your Password?') }}
                     <a class="text-decoration-none"
-                       href="{{ url_for('reset_password_request') }}">{{ _('Click to Reset It') }}</a>
+                       href="{{ url_for('auth.reset_password_request') }}">{{ _('Click to Reset It') }}</a>
                 </div>
                 <div class="mt-3">
                     {{ _('New User?') }}
-                    <a class="text-decoration-none" href="{{ url_for('register') }}"> {{ _('Click to Register') }}</a>
+                    <a class="text-decoration-none" href="{{ url_for('auth.register') }}"> {{ _('Click to Register') }}</a>
                 </div>
             </div>
         </div>

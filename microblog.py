@@ -1,7 +1,9 @@
-from config import Config
-from app import app, db
+from app import create_app, db, cli
 from app.models import User, Post, followers
-from app import cli
+from config import Config
+
+app = create_app()
+cli.register(app)
 
 
 @app.shell_context_processor

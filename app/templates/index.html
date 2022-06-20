@@ -25,7 +25,7 @@
             {% include '_post.html' %}
         {% endfor %}
         {% from "_pagination_helper.html" import render_pagination %}
-        {{ render_pagination(pagination, 'index', prev_url, next_url) }}
+        {{ render_pagination(pagination, 'main.index', prev_url, next_url) }}
     </section>
 
 {% endblock %}

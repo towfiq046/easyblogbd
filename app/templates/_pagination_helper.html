@@ -8,7 +8,7 @@
             {% if page %}
                 {% if page != pagination.page %}
                     <li class="page-item">
-                        {% if endpoint == 'profile' %}
+                        {% if endpoint == 'main.profile' %}
                             <a class="page-link"
                                href="{{ url_for(endpoint, username=user.username, page=page) }}">{{ page }}</a>
                         {% else %}
