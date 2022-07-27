@@ -1,3 +1,4 @@
+# pylint: disable=no-member
 from datetime import datetime
 from hashlib import md5
 from time import time
@@ -6,13 +7,15 @@ import jwt
 from flask import current_app
 from flask_login import UserMixin
 from jwt import DecodeError, ExpiredSignatureError
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 
 from app import db, login
-from app.constants import USERNAME_LENGTH, EMAIL_LENGTH, PASSWORD_LENGTH, ABOUT_ME_LENGTH
+from app.constants import (
+    ABOUT_ME_LENGTH, EMAIL_LENGTH, PASSWORD_LENGTH, USERNAME_LENGTH)
+from app.search import add_to_index, query_index, remove_from_index
 
-followers = db.Table('followers', db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
-                     db.Column('followed_id', db.Integer, db.ForeignKey('user.id')))
+followers = db.Table('followers', db.Column('follower_id', db.Integer, db.ForeignKey(
+    'user.id')), db.Column('followed_id', db.Integer, db.ForeignKey('user.id')))
 
 
 class User(UserMixin, db.Model):
@@ -91,12 +94,17 @@ class User(UserMixin, db.Model):
         followed = Post.query \
             .join(followers, (followers.c.followed_id == Post.user_id)) \
             .filter(followers.c.follower_id == self.id)
-        own = Post.query.filter_by(user_id=self.id)
-        return followed.union(own).order_by(Post.timestamp.desc())
+        own_post = Post.query.filter_by(user_id=self.id)
+        return followed.union(own_post).order_by(Post.timestamp.desc())
 
     def get_reset_password_token(self, expires_in=600):
-        return jwt.encode({'reset_password': self.id, 'exp': time() + expires_in}, current_app.config['SECRET_KEY'],
-                          algorithm='HS256')
+        return jwt.encode(
+            {
+                'reset_password': self.id,
+                'exp': time() + expires_in
+            },
+            current_app.config['SECRET_KEY'],
+            algorithm='HS256')
 
     @staticmethod
     def verify_reset_password_token(token):
@@ -124,8 +132,46 @@ def load_user(id):
     return User.query.get(int(id))
 
 
-class Post(db.Model):
+class SearchableMixin:
+    @classmethod
+    def search(cls, text_to_search, page, per_page):
+        list_of_ids, total_number_of_posts = query_index(cls.__tablename__, text_to_search, page, per_page)
+        if total_number_of_posts == 0:
+            return cls.query.filter_by(id=0), 0
+        id_serial = [(list_of_ids[i], i) for i in range(len(list_of_ids))]
+        return cls.query.filter(cls.id.in_(list_of_ids)).order_by(
+            db.case(id_serial, value=cls.id)), total_number_of_posts
+
+    @classmethod
+    def before_commit(cls, session):
+        session._changes = {
+            'add': list(session.new),
+            'update': list(session.dirty),
+            'delete': list(session.deleted)
+        }
+
+    @classmethod
+    def after_commit(cls, session):
+        for obj in session._changes['add']:
+            if isinstance(obj, SearchableMixin):
+                add_to_index(obj.__tablename__, obj)
+        for obj in session._changes['update']:
+            if isinstance(obj, SearchableMixin):
+                add_to_index(obj.__tablename__, obj)
+        for obj in session._changes['delete']:
+            if isinstance(obj, SearchableMixin):
+                remove_from_index(obj.__tablename__, obj)
+        session._changes = None
+
+    @classmethod
+    def reindex(cls):
+        for obj in cls.query:
+            add_to_index(cls.__tablename__, obj)
+
+
+class Post(SearchableMixin, db.Model):
     """ Model for representing the post table. """
+    __searchable__ = ['body']
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.String(1210))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
@@ -138,3 +184,7 @@ class Post(db.Model):
         @return: String
         """
         return f'<Post {self.body}>'
+
+
+db.event.listen(db.session, 'before_commit', SearchableMixin.before_commit)
+db.event.listen(db.session, 'after_commit', SearchableMixin.after_commit)

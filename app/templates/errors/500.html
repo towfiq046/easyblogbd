@@ -2,8 +2,8 @@
 
 {% block content %}
     <section class="container">
-        <h1>{{ _('An unexpected error has occurred!') }}</h1>
-        <p>{{ _('The administrator has been notified. Sorry for the inconvenience!') }}</p>
-        <p><a class="text-decoration-none" href="{{ url_for('main.index') }}">{{ _('Go Back') }}</a></p>
+        <h1>{{ gettext('An unexpected error has occurred!') }}</h1>
+        <p>{{ gettext('The administrator has been notified. Sorry for the inconvenience!') }}</p>
+        <p><a class="text-decoration-none" href="{{ url_for('main.index') }}">{{ gettext('Go Back') }}</a></p>
     </section>
 {% endblock %}

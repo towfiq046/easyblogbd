@@ -1,5 +1,5 @@
-from app import create_app, db, cli
-from app.models import User, Post, followers
+from app import cli, create_app, db
+from app.models import Post, User, followers
 from config import Config
 
 app = create_app()

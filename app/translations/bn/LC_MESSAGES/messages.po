@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-06-17 18:37+0600\n"
+"POT-Creation-Date: 2022-07-26 16:57+0600\n"
 "PO-Revision-Date: 2022-04-26 08:47+0600\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: bn\n"
@@ -18,220 +18,225 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.10.1\n"
 
-#: app/__init__.py:21
+#: app/__init__.py:22
 msgid "Please log in to access this page."
 msgstr "এই পেজটিতে যাওয়ার জন্য প্রবেশ করুন।"
 
 #: app/constants.py:9
-msgid "Please enter your username."
-msgstr "অনুগ্রহ করে আপনার ব্যবহারকারীর নাম বসান।"
+msgid "About me can not exceed 200 characters."
+msgstr "আমার সম্পর্কে ২০০ অক্ষর অতিক্রম করতে পারবে না।"
 
 #: app/constants.py:10
-#, python-format
-msgid "Username must be between %(min)d to %(max)d characters."
-msgstr "ব্যবহারকারীর নাম %(min)d থেকে %(max)d অক্ষরের মধ্যে হতে হবে।"
-
-#: app/constants.py:11
 msgid "Please enter your email."
 msgstr "অনুগ্রহ করে আপনার ইমেইল বসান।"
 
-#: app/constants.py:12
-msgid "Please enter a strong password."
-msgstr "অনুগ্রহ করে একটি শক্তিশালী পাসওয়ার্ড বসান।"
-
-#: app/constants.py:13
+#: app/constants.py:11
 #, python-format
 msgid "Password must be between %(min)d to %(max)d characters."
 msgstr "পাসওয়ার্ড অবশ্যই %(min)d থেকে %(max)d অক্ষরের মধ্যে হতে হবে।"
 
-#: app/constants.py:14
+#: app/constants.py:12
 msgid "Passwords must match."
 msgstr "উভয় পাসওয়ার্ড অবশ্যই এক হতে হবে।"
+
+#: app/constants.py:13
+msgid "Please enter a strong password."
+msgstr "অনুগ্রহ করে একটি শক্তিশালী পাসওয়ার্ড বসান।"
+
+#: app/constants.py:14
+#, python-format
+msgid "Username must be between %(min)d to %(max)d characters."
+msgstr "ব্যবহারকারীর নাম %(min)d থেকে %(max)d অক্ষরের মধ্যে হতে হবে।"
+
+#: app/constants.py:15
+msgid "Please enter your username."
+msgstr "অনুগ্রহ করে আপনার ব্যবহারকারীর নাম বসান।"
 
 #: app/helper.py:12
 msgid "This username is taken, please use a different username."
 msgstr "এই ব্যবহারকারীর নামটি নেওয়া হয়ে গেছে, অনুগ্রহ করে অন্য ব্যবহারকারীর নাম ব্যবহার করুন।"
 
 #: app/auth/email.py:9
-#, fuzzy
 msgid "[Microblog] Reset Your Password"
-msgstr "আপনার পাসওয়ার্ড পুনরায় বসাতে"
+msgstr "[মাইক্রোব্লগ] আপনার পাসওয়ার্ড পুনরায় সেট করুন"
 
-#: app/auth/forms.py:13 app/auth/forms.py:20 app/auth/forms.py:45
-#: app/main/forms.py:12
+#: app/auth/forms.py:13 app/auth/forms.py:23 app/auth/forms.py:53
+#: app/main/forms.py:14
 msgid "Username"
 msgstr "ব্যবহারকারীর নাম"
 
-#: app/auth/forms.py:14
+#: app/auth/forms.py:15
 msgid "Password"
 msgstr "পাসওয়ার্ড"
 
-#: app/auth/forms.py:14
+#: app/auth/forms.py:16
 msgid "Please enter your password."
 msgstr "অনুগ্রহ করে আপনার পাসওয়ার্ড বসান।"
 
-#: app/auth/forms.py:15
+#: app/auth/forms.py:17
 msgid "Remember Me"
 msgstr "মনে রাখো"
 
-#: app/auth/forms.py:16 app/auth/routes.py:45 app/templates/auth/login.html:8
+#: app/auth/forms.py:18 app/auth/routes.py:46 app/templates/auth/login.html:8
 msgid "Sign In"
 msgstr "প্রবেশ করুন"
 
-#: app/auth/forms.py:24 app/auth/forms.py:46
+#: app/auth/forms.py:29 app/auth/forms.py:54
 msgid "Email"
 msgstr "ইমেইল"
 
-#: app/auth/forms.py:25
-#, fuzzy
+#: app/auth/forms.py:32
 msgid "Please enter a valid email address."
 msgstr "একটি বৈধ ইমেইল ঠিকানা বসান"
 
-#: app/auth/forms.py:26 app/auth/forms.py:51
+#: app/auth/forms.py:34 app/auth/forms.py:60
 msgid "New Password"
 msgstr "নতুন পাসওয়ার্ড"
 
-#: app/auth/forms.py:29 app/auth/forms.py:54
+#: app/auth/forms.py:39 app/auth/forms.py:65
 msgid "Repeat Password"
 msgstr "পাসওয়ার্ডটি আবার বসান"
 
-#: app/auth/forms.py:31 app/auth/routes.py:27
-#: app/templates/auth/register.html:8 app/templates/base.html:35
+#: app/auth/forms.py:41 app/auth/routes.py:28
+#: app/templates/auth/register.html:8 app/templates/base.html:42
 msgid "Register"
 msgstr "নিবন্ধন"
 
-#: app/auth/forms.py:41
+#: app/auth/forms.py:49
 msgid "This email is taken, please use a different email."
 msgstr "এই ইমেইলটি নেওয়া হয়ে গেছে, অনুগ্রহ করে অন্য ইমেইল ব্যবহার করুন।"
 
-#: app/auth/forms.py:47
+#: app/auth/forms.py:55
 msgid "Request Password Reset"
 msgstr "পাসওয়ার্ড পুনরায় বসানোর আবেদন করুন।"
 
-#: app/auth/forms.py:56 app/auth/routes.py:67
+#: app/auth/forms.py:67 app/auth/routes.py:68
 msgid "Reset Password"
 msgstr "পাসওয়ার্ড পুনরায় বসান"
 
-#: app/auth/routes.py:24
+#: app/auth/routes.py:25
 msgid "Congratulations, you are now a registered user!"
 msgstr "অভিনন্দন, আপনি এখন একজন নিবন্ধিত ব্যবহারকারী!"
 
-#: app/auth/routes.py:38
+#: app/auth/routes.py:40
 msgid "Invalid username or password."
 msgstr "ভুল ব্যবহারকারীর নাম অথবা পাসওর্য়াড।"
 
-#: app/auth/routes.py:64
+#: app/auth/routes.py:66
 msgid "Thanks! If your Microblog username and email address match, you'll get an"
 " email with a link to reset your password shortly."
-msgstr "ধন্যবাদ! যদি আপনার মাইক্রোব্লগ ব্যবহারকারীর নাম এবং ইমেল ঠিকানা মিলে যায়, আপনি শীঘ্রই আপনার পাসওয়ার্ড"
-" পুনরায় বসানোর জন্য একটি লিঙ্ক সহ একটি ইমেল পাবেন৷"
+msgstr "ধন্যবাদ! যদি আপনার মাইক্রোব্লগ ব্যবহারকারীর নাম এবং ইমেল ঠিকানা মিলে "
+"যায়, আপনি শীঘ্রই আপনার পাসওয়ার্ড পুনরায় বসানোর জন্য একটি লিঙ্ক সহ একটি ইমেল পাবেন৷"
 
-#: app/auth/routes.py:76
+#: app/auth/routes.py:78
 msgid "Invalid request."
 msgstr "অনুরোধ অগ্রহণযোগ্য"
 
-#: app/auth/routes.py:82
+#: app/auth/routes.py:84
 msgid "Your password has been reset."
 msgstr "আপনার পাসওয়ার্ড পুনরায় বসানো হয়েছে।"
 
-#: app/main/forms.py:15
+#: app/main/forms.py:19
 msgid "About me"
 msgstr "আমার সম্পর্কে"
 
-#: app/main/forms.py:17 app/main/forms.py:25
+#: app/main/forms.py:22 app/main/forms.py:29
 msgid "Submit"
 msgstr "জমা দিন"
 
-#: app/main/forms.py:29
+#: app/main/forms.py:34
+msgid "What's on your mind"
+msgstr "আপনি কি ভাবছেন?"
+
+#: app/main/forms.py:36
 msgid "Please write something."
 msgstr "অনুগ্রহ করে কিছু লিখুন।"
 
-#: app/main/forms.py:30
+#: app/main/forms.py:38
 #, python-format
 msgid "Post must be between %(min)d to %(max)d characters."
 msgstr "পোস্ট অবশ্যই %(min)d থেকে %(max)d অক্ষরের মধ্যে হতে হবে।"
 
-#: app/main/forms.py:32
-msgid "What's on your mind"
-msgstr "আপনি কি ভাবছেন?"
-
-#: app/main/forms.py:33
+#: app/main/forms.py:40
 msgid "Post"
 msgstr "পোস্ট"
 
-#: app/main/routes.py:38
+#: app/main/forms.py:44
+msgid "Search"
+msgstr "খুঁজুন"
+
+#: app/main/routes.py:41
 msgid "Your post is successful!"
 msgstr "আপনার পোস্ট সফল হয়েছে!"
 
-#: app/main/routes.py:39 app/templates/base.html:24
+#: app/main/routes.py:43 app/templates/base.html:26
 msgid "Home"
 msgstr "হোম"
 
-#: app/main/routes.py:47 app/templates/base.html:45
+#: app/main/routes.py:52 app/templates/base.html:51
 msgid "Profile"
 msgstr "প্রোফাইল"
 
-#: app/main/routes.py:59
+#: app/main/routes.py:64
 msgid "Your changes have been saved."
 msgstr "আপনার পরিবর্তনগুলো সংরক্ষণ করা হয়েছে।"
 
-#: app/main/routes.py:64
-#, fuzzy
+#: app/main/routes.py:69
 msgid "Edit Profile"
 msgstr "আপনার প্রোফাইল সম্পাদনা করুন"
 
-#: app/main/routes.py:74 app/main/routes.py:94
+#: app/main/routes.py:79 app/main/routes.py:101
 #, python-format
 msgid "User %(username)s not found."
 msgstr "ব্যবহারকারী %(username)s-কে খুঁজে পাওয়া যায়নি।"
 
-#: app/main/routes.py:77
+#: app/main/routes.py:83
 msgid "You cannot follow yourself!"
 msgstr "আপনি নিজেকে অনুসরণ করতে পারবেন না!"
 
-#: app/main/routes.py:82
+#: app/main/routes.py:89
 #, python-format
 msgid "You are now following %(username)s."
 msgstr "আপনি এখন %(username)s-কে অনুসরণ করছেন।"
 
-#: app/main/routes.py:97
+#: app/main/routes.py:105
 msgid "You cannot unfollow yourself!"
 msgstr "আপনি নিজেকে অনুসরণ করা বন্ধ করতে পারবেন না!"
 
-#: app/main/routes.py:101
+#: app/main/routes.py:111
 #, python-format
 msgid "You unfollowed %(username)s."
 msgstr "আপনি %(username)s-কে অনুসরণ করেছেন না।"
 
-#: app/main/routes.py:109 app/templates/base.html:28
+#: app/main/routes.py:120 app/templates/base.html:30
 msgid "Explore"
 msgstr "ঘুরে দেখুন"
 
-#: app/templates/_pagination_helper.html:4
+#: app/templates/_pagination_helper.html:4 app/templates/search.html:19
 msgid "Previous"
 msgstr "পূর্ববর্তী"
 
-#: app/templates/_pagination_helper.html:29
+#: app/templates/_pagination_helper.html:28 app/templates/search.html:22
 msgid "Next"
 msgstr "পরবর্তী"
 
-#: app/templates/_post.html:22
+#: app/templates/_post.html:23
 msgid "Translate"
 msgstr "অনুবাদ"
 
-#: app/templates/base.html:7 app/templates/base.html:19
+#: app/templates/base.html:8 app/templates/base.html:21
 msgid "Microblog"
 msgstr "মাইক্রোব্লগ"
 
-#: app/templates/base.html:9
+#: app/templates/base.html:10
 msgid "Welcome to Microblog"
 msgstr "মাইক্রোব্লগে স্বাগতম"
 
-#: app/templates/base.html:39
+#: app/templates/base.html:46
 msgid "Login"
 msgstr "প্রবেশ করুন"
 
-#: app/templates/base.html:49
+#: app/templates/base.html:55
 msgid "Logout"
 msgstr "বের হন"
 
@@ -248,25 +253,37 @@ msgstr "সব পোস্ট ঘুরে দেখুন।"
 msgid "Hi, %(username)s!"
 msgstr "হাই, %(username)s!"
 
-#: app/templates/profile.html:13
+#: app/templates/profile.html:14
 msgid "Last seen on:"
 msgstr "শেষবার দেখা গেছে:"
 
-#: app/templates/profile.html:16
-msgid "follower"
-msgstr "অনুসারী"
-
 #: app/templates/profile.html:17
-msgid "followers"
-msgstr "অনুসারী"
+#, python-format
+msgid "%(num)s follower"
+msgid_plural "%(num)s followers"
+msgstr[0] "%(num)s জন অনুসারী"
+msgstr[1] "%(num)s জন অনুসারী"
 
-#: app/templates/profile.html:17
+#: app/templates/profile.html:18
 msgid "following"
 msgstr "জনকে অনুসরণ করছেন"
 
-#: app/templates/profile.html:21
+#: app/templates/profile.html:22
 msgid "Edit your profile"
 msgstr "আপনার প্রোফাইল সম্পাদনা করুন"
+
+#: app/templates/search.html:7
+msgid "Search Posts"
+msgstr "পোস্ট খুঁজুন"
+
+#: app/templates/search.html:9
+#, python-format
+msgid "Search results for: \"%(text_to_search)s\""
+msgstr "খোঁজা হয়েছে: \"%(text_to_search)s\""
+
+#: app/templates/search.html:12
+msgid "No posts found."
+msgstr "পোস্ট পাওয়া যায়নি।"
 
 #: app/templates/auth/login.html:21
 msgid "Forgot Your Password?"
@@ -308,7 +325,7 @@ msgstr "এখানে ক্লিক করুন"
 
 #: app/templates/email/reset_password.html:6
 msgid "Alternatively, you can paste the following link in your browser's address bar:"
-msgstr "বিকল্পভাবে, আপনি আপনার ব্রাউজারের ঠিকানা বারে নিম্নলিখিত লিঙ্কটি পেস্ট করতে পারেন:"
+msgstr "বিকল্পভাবে, আপনি আপনার ব্রাউজারে ঠিকানার অংশে নিম্নলিখিত লিঙ্কটি বসাতে পারেন:"
 
 #: app/templates/email/reset_password.html:8
 #: app/templates/email/reset_password.txt:7
@@ -342,6 +359,7 @@ msgid "Method Not Allowed."
 msgstr "পদ্ধতি অনুমোদিত নয়।"
 
 #: app/templates/errors/405.html:6 app/templates/errors/500.html:7
+#: app/templates/errors/503.html:7
 msgid "Go Back"
 msgstr "ফিরে যান"
 
@@ -349,7 +367,11 @@ msgstr "ফিরে যান"
 msgid "An unexpected error has occurred!"
 msgstr "একটি অপ্রত্যাশিত ত্রুটি ঘটেছে!"
 
-#: app/templates/errors/500.html:6
+#: app/templates/errors/500.html:6 app/templates/errors/503.html:6
 msgid "The administrator has been notified. Sorry for the inconvenience!"
 msgstr "প্রশাসককে অবহিত করা হয়েছে। অসুবিধার জন্য দুঃখিত!"
+
+#: app/templates/errors/503.html:5
+msgid "Service unavailable."
+msgstr "সেবা প্রদান করা যাচ্ছে না।"
 

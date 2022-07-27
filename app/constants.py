@@ -1,14 +1,15 @@
-from flask_babel import lazy_gettext as _l
+from flask_babel import lazy_gettext
 
-USERNAME_LENGTH = 64
+ABOUT_ME_LENGTH = 200
 EMAIL_LENGTH = 80
 PASSWORD_LENGTH = 128
-ABOUT_ME_LENGTH = 200
 POST_LENGTH = 1200
+USERNAME_LENGTH = 64
 
-USERNAME_REQUIRED_STRING = _l('Please enter your username.')
-USERNAME_LENGTH_STRING = _l('Username must be between %(min)d to %(max)d characters.')
-EMAIL_REQUIRED_STRING = _l('Please enter your email.')
-PASSWORD_REQUIRED_STRING = _l('Please enter a strong password.')
-PASSWORD_LENGTH_STRING = _l('Password must be between %(min)d to %(max)d characters.')
-PASSWORD_MATCH_STRING = _l('Passwords must match.')
+ABOUT_ME_MESSAGE = lazy_gettext('About me can not exceed 200 characters.')
+EMAIL_REQUIRED_MESSAGE = lazy_gettext('Please enter your email.')
+PASSWORD_LENGTH_MESSAGE = lazy_gettext('Password must be between %(min)d to %(max)d characters.')
+PASSWORD_MATCH_MESSAGE = lazy_gettext('Passwords must match.')
+PASSWORD_REQUIRED_MESSAGE = lazy_gettext('Please enter a strong password.')
+USERNAME_LENGTH_MESSAGE = lazy_gettext('Username must be between %(min)d to %(max)d characters.')
+USERNAME_REQUIRED_MESSAGE = lazy_gettext('Please enter your username.')

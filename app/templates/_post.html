@@ -2,25 +2,26 @@
     <div class="col-8 mx-auto">
         <div class="card mb-3">
             <div class="row g-0">
-                <div class="col-md-2 align-self-center border-end">
+                <div class="col-md-2 align-self-center text-center border-end">
                     <a href="{{ url_for('main.profile', username=post.author.username) }}">
-                        <img class="d-block mx-auto" src="{{ post.author.avatar(60) }}" alt="">
+                        <img class="p-3" src="{{ post.author.avatar(60) }}" alt="">
                     </a>
                 </div>
                 <div class="col-md-10">
                     <div class="card-body">
-                        <a href="{{ url_for('main.profile', username=post.author.username) }}" class="text-decoration-none">
+                        <a href="{{ url_for('main.profile', username=post.author.username) }}"
+                            class="text-decoration-none d-inline-flex">
                             <h5 class="card-title">{{ post.author.username | capitalize }}</h5>
                         </a>
                         <p id="post{{ post.id }}" class="card-text">{{ post.body }}</p>
                         {% if post.language and post.language != g.locale %}
-                            <span id="translation{{ post.id }}">
-                                <a class="small text-decoration-none" href="javascript:translate(
+                        <span id="translation{{ post.id }}">
+                            <a class="small text-decoration-none" href="javascript:translate(
                                 'translation{{ post.id }}',
                                 'post{{ post.id }}',
                                 '{{ g.locale }}',
-                                '{{ post.language }}');">{{ _('Translate') }}</a>
-                            </span>
+                                '{{ post.language }}');">{{ gettext('Translate') }}</a>
+                        </span>
                         {% endif %}
                         <p class="card-text">
                             <small class="text-muted">{{ moment(post.timestamp).fromNow() }}</small>

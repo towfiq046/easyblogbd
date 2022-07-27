@@ -11,6 +11,9 @@ load_dotenv(os.path.join(basedir, '.env'))
 class Config:
     """ Config class """
     ADMINS = ['kkq4647@gmail.com']
+    ELASTICSEARCH_URL = os.environ.get('ELASTICSEARCH_URL')
+    ELASTICSEARCH_NAME = os.environ.get('ELASTICSEARCH_NAME')
+    ELASTICSEARCH_PASS = os.environ.get('ELASTICSEARCH_PASS')
     LANGUAGES = ['bn', 'en']
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     MAIL_PORT = int(os.environ.get('MAIL_PORT') or 25)

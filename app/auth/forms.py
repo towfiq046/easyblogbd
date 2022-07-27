@@ -1,56 +1,67 @@
-from flask_babel import lazy_gettext as _l
+from flask_babel import lazy_gettext
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired, Length, EqualTo, ValidationError, Email
 
-from app.constants import USERNAME_REQUIRED_STRING, USERNAME_LENGTH, USERNAME_LENGTH_STRING, EMAIL_REQUIRED_STRING, \
-    PASSWORD_REQUIRED_STRING, PASSWORD_LENGTH, PASSWORD_LENGTH_STRING, PASSWORD_MATCH_STRING
+from app.constants import (USERNAME_REQUIRED_MESSAGE, USERNAME_LENGTH, USERNAME_LENGTH_MESSAGE, EMAIL_REQUIRED_MESSAGE,
+                           PASSWORD_REQUIRED_MESSAGE, PASSWORD_LENGTH, PASSWORD_LENGTH_MESSAGE, PASSWORD_MATCH_MESSAGE)
 from app.helper import validate_username
 from app.models import User
 
 
 class LoginForm(FlaskForm):
-    username = StringField(label=_l('Username'), validators=[DataRequired(message=USERNAME_REQUIRED_STRING)])
-    password = PasswordField(label=_l('Password'), validators=[DataRequired(message=_l('Please enter your password.'))])
-    remember_me = BooleanField(label=_l('Remember Me'))
-    submit = SubmitField(label=_l('Sign In'))
+    username = StringField(label=lazy_gettext('Username'), validators=[DataRequired(message=USERNAME_REQUIRED_MESSAGE)])
+    password = PasswordField(
+        label=lazy_gettext('Password'),
+        validators=[DataRequired(message=lazy_gettext('Please enter your password.'))])
+    remember_me = BooleanField(label=lazy_gettext('Remember Me'))
+    submit = SubmitField(label=lazy_gettext('Sign In'))
 
 
 class RegistrationForm(FlaskForm):
-    username = StringField(label=_l('Username'), validators=[DataRequired(message=USERNAME_REQUIRED_STRING),
-                                                             Length(min=3, max=USERNAME_LENGTH,
-                                                                    message=USERNAME_LENGTH_STRING)],
-                           render_kw={})
-    email = StringField(label=_l('Email'), validators=[DataRequired(message=EMAIL_REQUIRED_STRING),
-                                                       Email(message=_l('Please enter a valid email address.'))])
-    password = PasswordField(label=_l('New Password'), validators=[DataRequired(message=PASSWORD_REQUIRED_STRING),
-                                                                   Length(min=6, max=PASSWORD_LENGTH,
-                                                                          message=PASSWORD_LENGTH_STRING)])
-    confirm = PasswordField(label=_l('Repeat Password'),
-                            validators=[EqualTo('password', message=PASSWORD_MATCH_STRING)])
-    submit = SubmitField(label=_l('Register'))
+    username = StringField(
+        label=lazy_gettext('Username'),
+        validators=[
+            DataRequired(message=USERNAME_REQUIRED_MESSAGE),
+            Length(min=3, max=USERNAME_LENGTH, message=USERNAME_LENGTH_MESSAGE)],
+        render_kw={})
+    email = StringField(
+        label=lazy_gettext('Email'),
+        validators=[
+            DataRequired(message=EMAIL_REQUIRED_MESSAGE),
+            Email(message=lazy_gettext('Please enter a valid email address.'))])
+    password = PasswordField(
+        label=lazy_gettext('New Password'),
+        validators=[
+            DataRequired(message=PASSWORD_REQUIRED_MESSAGE),
+            Length(min=6, max=PASSWORD_LENGTH, message=PASSWORD_LENGTH_MESSAGE)])
+    confirm = PasswordField(
+        label=lazy_gettext('Repeat Password'),
+        validators=[EqualTo('password', message=PASSWORD_MATCH_MESSAGE)])
+    submit = SubmitField(label=lazy_gettext('Register'))
 
-    @staticmethod
     def validate_username(self, username):
         validate_username(username)
 
-    @staticmethod
     def validate_email(self, email):
         email = User.query.filter_by(email=email.data).first()
         if email is not None:
-            raise ValidationError(_l('This email is taken, please use a different email.'))
+            raise ValidationError(lazy_gettext('This email is taken, please use a different email.'))
 
 
 class ResetPasswordRequestForm(FlaskForm):
-    username = StringField(label=_l('Username'), validators=[DataRequired(message=USERNAME_REQUIRED_STRING)])
-    email = StringField(label=_l('Email'), validators=[DataRequired(message=EMAIL_REQUIRED_STRING), Email()])
-    submit = SubmitField(_l('Request Password Reset'))
+    username = StringField(label=lazy_gettext('Username'), validators=[DataRequired(message=USERNAME_REQUIRED_MESSAGE)])
+    email = StringField(label=lazy_gettext('Email'), validators=[DataRequired(message=EMAIL_REQUIRED_MESSAGE), Email()])
+    submit = SubmitField(lazy_gettext('Request Password Reset'))
 
 
 class ResetPasswordForm(FlaskForm):
-    password = PasswordField(label=_l('New Password'), validators=[DataRequired(message=PASSWORD_REQUIRED_STRING),
-                                                                   Length(min=6, max=PASSWORD_LENGTH,
-                                                                          message=PASSWORD_LENGTH_STRING)])
-    confirm = PasswordField(label=_l('Repeat Password'),
-                            validators=[EqualTo('password', message=PASSWORD_MATCH_STRING)])
-    submit = SubmitField(_l('Reset Password'))
+    password = PasswordField(
+        label=lazy_gettext('New Password'),
+        validators=[
+            DataRequired(message=PASSWORD_REQUIRED_MESSAGE),
+            Length(min=6, max=PASSWORD_LENGTH, message=PASSWORD_LENGTH_MESSAGE)])
+    confirm = PasswordField(
+        label=lazy_gettext('Repeat Password'),
+        validators=[EqualTo('password', message=PASSWORD_MATCH_MESSAGE)])
+    submit = SubmitField(lazy_gettext('Reset Password'))

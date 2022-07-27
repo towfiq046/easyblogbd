@@ -5,7 +5,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-xxl-4 col-xl-5 col-lg-6 col-md-7 col-sm-8">
-                <h1 class="mb-5 text-center">{{ _('Register') }}</h1>
+                <h1 class="mb-5 text-center">{{ gettext('Register') }}</h1>
                 {% from "_form_helper.html" import render_field %}
                 <form action="" method="post" novalidate>
                     {{ form.hidden_tag() }}

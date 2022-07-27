@@ -2,9 +2,10 @@ import logging
 import os
 from logging.handlers import SMTPHandler, RotatingFileHandler
 
+from elasticsearch import Elasticsearch
 from flask import Flask, request, current_app
 from flask_babel import Babel
-from flask_babel import lazy_gettext as _l
+from flask_babel import lazy_gettext
 from flask_login import LoginManager
 from flask_mail import Mail
 from flask_migrate import Migrate
@@ -18,7 +19,7 @@ migrate = Migrate()
 login = LoginManager()
 mail = Mail()
 login.login_view = 'auth.login'
-login.login_message = _l('Please log in to access this page.')
+login.login_message = lazy_gettext('Please log in to access this page.')
 moment = Moment()
 babel = Babel()
 
@@ -26,6 +27,9 @@ babel = Babel()
 def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
+    app.elasticsearch = Elasticsearch(app.config.get('ELASTICSEARCH_URL', None), basic_auth=(
+        app.config.get('ELASTICSEARCH_NAME', None), app.config.get('ELASTICSEARCH_PASS', None)), verify_certs=False,
+        ssl_show_warn=False) if app.config['ELASTICSEARCH_URL'] else None
 
     db.init_app(app)
     migrate.init_app(app, db)

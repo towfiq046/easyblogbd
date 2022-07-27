@@ -10,15 +10,16 @@
                     <div class="card-body">
                         <h3 class="card-title">{{ user.username | capitalize }}</h3>
                         <p class="card-text">{% if user.about_me %}{{ user.about_me }}{% endif %}</p>
-                        <p class="card-text">{% if user.last_seen %}<small class="text-muted">{{ _('Last seen on:') }}
+                        <p class="card-text">{% if user.last_seen %}<small class="text-muted">
+                            {{ gettext('Last seen on:') }}
                             {{ moment(user.last_seen).format('LLLL') }}{% endif %}</small></p>
                         <p>
-                            {{ user.followers.count() }} {% if user.followers.count() < 2 %} {{ _('follower') }} {% else %}
-                            {{ _('followers') }} {% endif %} &nbsp; {{ user.followed.count() }} {{ _('following') }}
+                            {{ ngettext('%(num)s follower', '%(num)s followers', user.followers.count()) }}&nbsp;
+                            {{ user.followed.count() }} {{ gettext('following') }}
                         </p>
                         {% if user == current_user %}
                             <a class="btn btn-outline-info rounded-pill" href="{{ url_for('main.edit_profile') }}">
-                                {{ _('Edit your profile') }}</a>
+                                {{ gettext('Edit your profile') }}</a>
                         {% elif current_user.is_following(user) %}
                             <form action="{{ url_for('main.unfollow', username=user.username) }}" method="post">
                                 {{ form.hidden_tag() }}

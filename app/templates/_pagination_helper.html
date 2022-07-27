@@ -1,7 +1,7 @@
 {% macro render_pagination(pagination, endpoint, prev_url, next_url, user=None) %}
     <ul class="pagination justify-content-center">
-        <li class="page-item {% if not prev_url %} disabled{% endif %}">
-            <a class="page-link" href="{{ prev_url or '#' }}">{{ _('Previous') }}
+        <li class="page-item {% if not prev_url %} disabled {% endif %}">
+            <a class="page-link" href="{{ prev_url or '#' }}">{{ gettext('Previous') }}
             </a>
         </li>
         {%- for page in pagination.iter_pages(right_current=2) %}
@@ -14,7 +14,6 @@
                         {% else %}
                             <a class="page-link" href="{{ url_for(endpoint, page=page) }}">{{ page }}</a>
                         {% endif %}
-
                     </li>
                 {% else %}
                     <li class="page-item disabled">
@@ -25,8 +24,8 @@
                 <span class=ellipsis>…</span>
             {% endif %}
         {%- endfor %}
-        <li class="page-item {% if not next_url %} disabled{% endif %}">
-            <a class="page-link" href="{{ next_url or '#' }}">{{ _('Next') }}
+        <li class="page-item {% if not next_url %} disabled {% endif %}">
+            <a class="page-link" href="{{ next_url or '#' }}">{{ gettext('Next') }}
             </a>
         </li>
     </ul>

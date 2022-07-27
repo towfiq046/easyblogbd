@@ -2,7 +2,7 @@
 
 {% block content %}
     <section class="container">
-        <h1>{{ _('File Not Found.') }}</h1>
-        <p><a class="text-decoration-none" href="{{ url_for('main.index') }}">{{ _('Go back') }}</a></p>
+        <h1>{{ gettext('File Not Found.') }}</h1>
+        <p><a class="text-decoration-none" href="{{ url_for('main.index') }}">{{ gettext('Go back') }}</a></p>
     </section>
 {% endblock %}
