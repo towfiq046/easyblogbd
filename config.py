@@ -15,6 +15,7 @@ class Config:
     ELASTICSEARCH_NAME = os.environ.get('ELASTICSEARCH_NAME')
     ELASTICSEARCH_PASS = os.environ.get('ELASTICSEARCH_PASS')
     LANGUAGES = ['bn', 'en']
+    LOG_TO_STDOUT = os.environ.get('LOG_TO_STDOUT')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     MAIL_PORT = int(os.environ.get('MAIL_PORT') or 25)
     MAIL_SERVER = os.environ.get('MAIL_SERVER')
@@ -22,7 +23,8 @@ class Config:
     MAIL_USE_TLS = os.environ.get('MAIL_USE_TLS') is not None
     POSTS_PER_PAGE = 10
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'my-secret-key'
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///' + os.path.join(basedir, 'app.db')
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', '').replace(
+        'postgres://', 'postgresql://') or 'sqlite:///' + os.path.join(basedir, 'app.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
