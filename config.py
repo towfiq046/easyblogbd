@@ -22,10 +22,11 @@ class Config:
     MAIL_USE_TLS = os.environ.get('MAIL_USE_TLS') is not None
     POSTS_PER_PAGE = 10
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'my-secret-key'
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URI') or 'sqlite:///' + os.path.join(basedir, 'app.db')
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///' + os.path.join(basedir, 'app.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
 class TestConfig(Config):
+    """ Config class for testing """
     SQLALCHEMY_DATABASE_URI = 'sqlite://'
     TESTING = True
