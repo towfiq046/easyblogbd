@@ -2,43 +2,61 @@
 {% set active_page = 'profile' %}
 
 {% block content %}
-    <section class="container">
-        <div class="row justify-content-center">
-            <div class="col mb-5">
-                <div class="card" style="width: 18rem;">
-                    <img class="card-img-top" src="{{ user.avatar(128) }}" alt="Card image cap">
-                    <div class="card-body">
-                        <h3 class="card-title">{{ user.username | capitalize }}</h3>
-                        <p class="card-text">{% if user.about_me %}{{ user.about_me }}{% endif %}</p>
-                        <p class="card-text">{% if user.last_seen %}<small class="text-muted">
-                            {{ gettext('Last seen on:') }}
-                            {{ moment(user.last_seen).format('LLLL') }}{% endif %}</small></p>
-                        <p>
-                            {{ ngettext('%(num)s follower', '%(num)s followers', user.followers.count()) }}&nbsp;
-                            {{ user.followed.count() }} {{ gettext('following') }}
-                        </p>
-                        {% if user == current_user %}
-                            <a class="btn btn-outline-info rounded-pill" href="{{ url_for('main.edit_profile') }}">
-                                {{ gettext('Edit your profile') }}</a>
-                        {% elif current_user.is_following(user) %}
-                            <form action="{{ url_for('main.unfollow', username=user.username) }}" method="post">
-                                {{ form.hidden_tag() }}
-                                {{ form.submit(value='Unollow', class='btn btn-outline-info rounded-pill') }}
-                            </form>
-                        {% else %}
-                            <form action="{{ url_for('main.follow', username=user.username) }}" method="post">
-                                {{ form.hidden_tag() }}
-                                {{ form.submit(value='Follow', class='btn btn-outline-info rounded-pill') }}
-                            </form>
-                        {% endif %}
-                    </div>
-                </div>
+    <div class="row shadow rounded-3 mb-3 mb-lg-5">
+        <div class="d-flex col-md-3 justify-content-center">
+            <img class="img-fluid rounded-3 align-self-center" src="{{ user.avatar(160) }}" alt="image">
+        </div>
+        <div class="col-md-9 p-3">
+            <h3 class="text-center text-md-start mb-0 mb-md-2">{{ user.username | capitalize }}</h3>
+            <p class="small text-center text-md-start mb-0 mb-md-2">
+                {% if user.about_me %}{{ user.about_me }}{% endif %}</p>
+            <p class="text-center text-md-start mb-0 mb-md-2">{% if user.last_seen %}
+                <small class="text-muted text-center text-md-start">
+                {{ gettext('Last seen on:') }}
+                {{ moment(user.last_seen).format('LLLL') }}{% endif %}
+                </small>
+            </p>
+            <p class="small text-center text-md-start mb-0 mb-md-2">
+                {{ ngettext('%(num)s follower', '%(num)s followers', user.followers.count()) }}&nbsp;
+                {{ user.followed.count() }} {{ gettext('following') }}
+            </p>
+            <div class="d-flex flex-md-row flex-column justify-content-center justify-content-md-start my-2">
+                {% if user == current_user %}
+                    <a class="btn btn-outline-info rounded-pill align-self-center"
+                       href="{{ url_for('main.edit_profile') }}">
+                        {{ gettext('Edit your profile') }}
+                    </a>
+                    {% if not current_user.get_task_in_progress('export_posts') %}
+                        <a class="btn btn-outline-primary rounded-pill align-self-center ms-md-3 mt-md-0 mt-2"
+                           href="{{ url_for('main.export_posts') }}">
+                            {{ gettext('Export your posts') }}
+                        </a>
+                    {% endif %}
+                {% elif current_user.is_following(user) %}
+                    <form action="{{ url_for('main.unfollow', username=user.username) }}" method="post"
+                          class="align-self-center">
+                        {{ form.hidden_tag() }}
+                        {{ form.submit(value=gettext('Unfollow'), class='btn btn-outline-info rounded-pill') }}
+                    </form>
+                {% else %}
+                    <form action="{{ url_for('main.follow', username=user.username) }}" method="post"
+                          class="align-self-center">
+                        {{ form.hidden_tag() }}
+                        {{ form.submit(value=gettext('Follow'), class='btn btn-outline-info rounded-pill') }}
+                    </form>
+                {% endif %}
+                {% if user != current_user %}
+                    <a href="{{ url_for('main.send_message', receiver=user.username) }}"
+                       class="ms-md-3 mt-md-0 mt-2 btn btn-outline-primary rounded-pill align-self-center">
+                        {{ gettext('Send private message') }}
+                    </a>
+                {% endif %}
             </div>
         </div>
-        {% for post in posts %}
-            {% include '_post.html' %}
-        {% endfor %}
-        {% from "_pagination_helper.html" import render_pagination %}
-        {{ render_pagination(pagination, 'main.profile', prev_url, next_url, user=user) }}
-    </section>
+    </div>
+    {% for post in posts %}
+        {% include '_post.html' %}
+    {% endfor %}
+    {% from "_pagination_helper.html" import render_pagination %}
+    {{ render_pagination(pagination, 'main.profile', prev_url, next_url, user=user) }}
 {% endblock %}

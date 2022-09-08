@@ -1,34 +1,31 @@
-<div class="row mb-3">
-    <div class="col-8 mx-auto">
-        <div class="card mb-3">
-            <div class="row g-0">
-                <div class="col-md-2 align-self-center text-center border-end">
-                    <a href="{{ url_for('main.profile', username=post.author.username) }}">
-                        <img class="p-3" src="{{ post.author.avatar(60) }}" alt="">
-                    </a>
-                </div>
-                <div class="col-md-10">
-                    <div class="card-body">
-                        <a href="{{ url_for('main.profile', username=post.author.username) }}"
-                            class="text-decoration-none d-inline-flex">
-                            <h5 class="card-title">{{ post.author.username | capitalize }}</h5>
-                        </a>
-                        <p id="post{{ post.id }}" class="card-text">{{ post.body }}</p>
-                        {% if post.language and post.language != g.locale %}
-                        <span id="translation{{ post.id }}">
-                            <a class="small text-decoration-none" href="javascript:translate(
-                                'translation{{ post.id }}',
-                                'post{{ post.id }}',
-                                '{{ g.locale }}',
-                                '{{ post.language }}');">{{ gettext('Translate') }}</a>
-                        </span>
-                        {% endif %}
-                        <p class="card-text">
-                            <small class="text-muted">{{ moment(post.timestamp).fromNow() }}</small>
-                        </p>
-                    </div>
-                </div>
-            </div>
+<div class="row">
+    <div class="col-lg-8 mx-auto mb-3 d-flex align-items-center py-2 shadow-sm rounded-3">
+        <div class="align-self-baseline flex-shrink-0 me-3">
+            <a href="{{ url_for('main.profile', username=post.author.username) }}"
+               data-username="{{ post.author.username }}">
+                <img class="rounded-circle" src="{{ post.author.avatar(48) }}" alt="">
+            </a>
+        </div>
+        <div class="flex-grow-1">
+            <span>
+                <a href="{{ url_for('main.profile', username=post.author.username) }}"
+                   data-username="{{ post.author.username }}" class="text-decoration-none text-dark fw-bold">
+                    {{ post.author.username }}
+                </a>
+            </span>
+            <small class="text-muted">&nbsp;{{ moment(post.timestamp).fromNow() }}</small>
+            <p id="post{{ post.id }}" class="small mb-1">{{ post.body }}</p>
+            {% if post.language and post.language != g.locale %}
+                <span id="translation{{ post.id }}">
+                <a class="small text-decoration-none" href="javascript:void(0)" onclick="translate(
+                        'translation{{ post.id }}',
+                        'post{{ post.id }}',
+                        '{{ g.locale }}',
+                        '{{ post.language }}');">
+                    {{ gettext('Translate') }}
+                </a>
+            </span>
+            {% endif %}
         </div>
     </div>
 </div>

@@ -1,8 +1,6 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <section class="container">
-        <h1>{{ gettext('File Not Found.') }}</h1>
-        <p><a class="text-decoration-none" href="{{ url_for('main.index') }}">{{ gettext('Go back') }}</a></p>
-    </section>
+    <h1>{{ gettext('File Not Found.') }}</h1>
+    <p><a class="text-decoration-none" href="{{ url_for('main.index') }}">{{ gettext('Go back') }}</a></p>
 {% endblock %}

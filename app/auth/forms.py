@@ -23,8 +23,7 @@ class RegistrationForm(FlaskForm):
         label=lazy_gettext('Username'),
         validators=[
             DataRequired(message=USERNAME_REQUIRED_MESSAGE),
-            Length(min=3, max=USERNAME_LENGTH, message=USERNAME_LENGTH_MESSAGE)],
-        render_kw={})
+            Length(min=3, max=USERNAME_LENGTH, message=USERNAME_LENGTH_MESSAGE)])
     email = StringField(
         label=lazy_gettext('Email'),
         validators=[

@@ -63,7 +63,7 @@ def reset_password_request():
         if user:
             send_password_reset_email(user)
         return flash_message_and_redirect(
-            message=gettext("Thanks! If your Microblog username and email address match, you'll get an email with a "
+            message=gettext("Thanks! If your Easyblogbd username and email address match, you'll get an email with a "
                             "link to reset your password shortly."), endpoint='auth.login', category='info')
     return render_template('auth/reset_password_request.html', title=gettext('Reset Password'), form=form)
 
@@ -81,5 +81,5 @@ def reset_password(token):
         user.set_password(form.password.data)
         db.session.commit()
         return flash_message_and_redirect(
-            message=gettext('Your password has been reset.'), endpoint='auth.url_forlogin', category='success')
+            message=gettext('Your password has been reset.'), endpoint='auth.login', category='success')
     return render_template('auth/reset_password.html', form=form)

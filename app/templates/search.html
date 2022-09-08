@@ -1,29 +1,27 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <section class="container">
-        <div class="row justify-content-center">
-            <div class="col mb-5">
-                <h1 class="text-center mb-5">{{ gettext('Search Posts') }}</h1>
-                <p class="text-center fs-5">
-                    {{ gettext('Search results for: "%(text_to_search)s"', text_to_search=text_to_search) }}
-                </p>
-                {% if total_number_of_posts == 0 %}
-                    <P class="text-center fs-5">{{ gettext('No posts found.') }}</P>
-                {% else %}
-                    {% for post in posts %}
-                        {% include '_post.html' %}
-                    {% endfor %}
-                    <ul class="pagination justify-content-center">
-                        <li class="page-item {% if not prev_url %} disabled {% endif %}">
-                            <a href="{{ prev_url or '#' }}" class="page-link">{{ gettext('Previous') }}</a>
-                        </li>
-                        <li class="page-item {% if not next_url %} disabled {% endif %}">
-                            <a href="{{ next_url or '#' }}" class="page-link">{{ gettext('Next') }}</a>
-                        </li>
-                    </ul>
-                {% endif %}
-            </div>
+    <div class="row justify-content-center">
+        <h1 class="text-center mb-3 mb-lg-5">{{ gettext('Search Posts') }}</h1>
+        <div class="col">
+            <p class="text-center fs-5">
+                {{ gettext('Search results for: "%(text_to_search)s"', text_to_search=text_to_search) }}
+            </p>
+            {% if total_number_of_posts == 0 %}
+                <P class="text-center fs-5">{{ gettext('No posts found.') }}</P>
+            {% else %}
+                {% for post in posts %}
+                    {% include '_post.html' %}
+                {% endfor %}
+                <ul class="pagination justify-content-center">
+                    <li class="page-item {% if not prev_url %} disabled {% endif %}">
+                        <a href="{{ prev_url or '#' }}" class="page-link">{{ gettext('Previous') }}</a>
+                    </li>
+                    <li class="page-item {% if not next_url %} disabled {% endif %}">
+                        <a href="{{ next_url or '#' }}" class="page-link">{{ gettext('Next') }}</a>
+                    </li>
+                </ul>
+            {% endif %}
         </div>
-    </section>
+    </div>
 {% endblock %}

@@ -5,7 +5,7 @@ from wtforms import StringField, SubmitField, TextAreaField
 from wtforms.validators import DataRequired, Length, Optional
 
 from app.constants import (USERNAME_LENGTH, ABOUT_ME_LENGTH, POST_LENGTH, USERNAME_REQUIRED_MESSAGE,
-                           USERNAME_LENGTH_MESSAGE, ABOUT_ME_MESSAGE)
+                           USERNAME_LENGTH_MESSAGE, ABOUT_ME_MESSAGE, MESSAGE_LENGTH, WRITE_SOMETHING_MESSAGE)
 from app.helper import validate_username
 
 
@@ -33,7 +33,7 @@ class PostForm(FlaskForm):
     post = TextAreaField(
         label=lazy_gettext("What's on your mind"),
         validators=[
-            DataRequired(message=lazy_gettext('Please write something.')),
+            DataRequired(message=WRITE_SOMETHING_MESSAGE),
             Length(min=1, max=POST_LENGTH,
                    message=lazy_gettext('Post must be between %(min)d to %(max)d characters.'))],
         render_kw={'style': 'height: 100px'})
@@ -49,3 +49,11 @@ class SearchForm(FlaskForm):
         if 'meta' not in kwargs:
             kwargs['meta'] = {'csrf': False}
         super(SearchForm, self).__init__(*args, **kwargs)
+
+
+class MessageForm(FlaskForm):
+    message = TextAreaField(
+        label=lazy_gettext('Message'),
+        validators=[DataRequired(message=WRITE_SOMETHING_MESSAGE), Length(min=1, max=MESSAGE_LENGTH)],
+        render_kw={'style': 'height: 80px'})
+    submit = SubmitField(lazy_gettext('Submit'))

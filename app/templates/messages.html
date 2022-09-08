@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% set active_page = 'messages' %}
+
+{% block content %}
+    <h1 class="text-center justify-content-center mb-3 mb-lg-5">{{ gettext('Messages') }}</h1>
+    {% for post in posts %}
+        {% include '_post.html' %}
+    {% endfor %}
+    {% from "_pagination_helper.html" import render_pagination %}
+    {{ render_pagination(pagination, 'main.messages', prev_url, next_url) }}
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="text-center justify-content-center mb-3 mb-lg-5">{{ gettext('Send Message to %(receiver)s',
+    receiver=receiver) }}</h1>
+{% from "_form_helper.html" import render_field %}
+<form action="" method="post" novalidate>
+    {{ form.hidden_tag() }}
+    {{ render_field(form.message, 'form-control rounded-3', 'is-invalid', placeholder='dummy') }}
+    {{ form.submit(class='btn btn-outline-primary rounded-pill') }}
+</form>
+{% endblock %}

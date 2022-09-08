@@ -1,9 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <section class="container">
-        <h1>{{ gettext('Service unavailable.') }}</h1>
-        <p>{{ gettext('The administrator has been notified. Sorry for the inconvenience!') }}</p>
-        <p><a class="text-decoration-none" href="{{ url_for('main.index') }}">{{ gettext('Go Back') }}</a></p>
-    </section>
+    <h1>{{ gettext('Service unavailable.') }}</h1>
+    <p>{{ gettext('The administrator has been notified. Sorry for the inconvenience!') }}</p>
+    <p><a class="text-decoration-none" href="{{ url_for('main.index') }}">{{ gettext('Go Back') }}</a></p>
 {% endblock %}

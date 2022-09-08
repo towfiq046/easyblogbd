@@ -2,24 +2,15 @@
 {% set active_page = 'index' %}
 
 {% block content %}
-    <section class="container">
-        <div class="row justify-content-center">
-            <div class="col mb-5">
-                <h1 class="text-center mb-5">{{ gettext('Hi, %(username)s!', username=current_user.username|capitalize) }}
-                </h1>
-                {% from "_form_helper.html" import render_field %}
-                <form action="" method="post" novalidate>
-                    {{ form.hidden_tag() }}
-                    {{ render_field(form.post, 'form-control', 'is-invalid', placeholder='dummy') }}
-                    {{ form.submit(class='btn btn-outline-primary rounded-pill mt-3') }}
-                </form>
-            </div>
-        </div>
-        {% for post in posts %}
-            {% include '_post.html' %}
-        {% endfor %}
-        {% from "_pagination_helper.html" import render_pagination %}
-        {{ render_pagination(pagination, 'main.index', prev_url, next_url) }}
-    </section>
-
+    {% from "_form_helper.html" import render_field %}
+    <form class="justify-content-center mb-3 mb-lg-5" action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        {{ render_field(form.post, 'form-control rounded-3', 'is-invalid', placeholder='dummy') }}
+        {{ form.submit(class='btn btn-outline-primary rounded-pill') }}
+    </form>
+    {% for post in posts %}
+        {% include '_post.html' %}
+    {% endfor %}
+    {% from "_pagination_helper.html" import render_pagination %}
+    {{ render_pagination(pagination, 'main.index', prev_url, next_url) }}
 {% endblock %}

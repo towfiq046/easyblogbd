@@ -1,17 +1,18 @@
 from datetime import datetime
 
 from elastic_transport import ConnectionError
-from flask import (current_app, g, jsonify, redirect, render_template, request, url_for)
+from flask import (current_app, flash, g, jsonify, redirect, render_template, request, url_for)
 from flask_babel import get_locale, gettext
 from flask_login import current_user, login_required
 from googletrans import Translator
+from redis.exceptions import ConnectionError
 
 from app import db
 from app.exceptions import LangDetectException
 from app.helper import flash_message_and_redirect
 from app.main import bp
-from app.main.forms import EditProfileForm, EmptyForm, PostForm, SearchForm
-from app.models import Post, User
+from app.main.forms import EditProfileForm, EmptyForm, MessageForm, PostForm, SearchForm
+from app.models import Message, Notification, Post, User
 
 
 @bp.before_request
@@ -39,17 +40,29 @@ def index():
         db.session.commit()
         return flash_message_and_redirect(
             message=gettext('Your post is successful!'), endpoint=endpoint, category='success')
+    pagination = current_user.followed_posts().paginate(
+        request.args.get('page', 1, type=int), current_app.config['POSTS_PER_PAGE'], False)
     return _render_template_with_pagination(
-        endpoint=endpoint, template_name='index.html', title=gettext('Home'), form=form)
+        endpoint=endpoint, pagination=pagination, template_name='index.html', title=gettext('Home'), form=form)
 
 
 @bp.route('/profile/<username>')
 @login_required
 def profile(username):
     user = User.query.filter_by(username=username).first_or_404()
-    form = EmptyForm()
+    pagination = user.posts.order_by(Post.timestamp.desc()).paginate(
+        request.args.get('page', 1, type=int), current_app.config['POSTS_PER_PAGE'], False)
     return _render_template_with_pagination(
-        endpoint='main.profile', template_name='profile.html', title=gettext('Profile'), form=form, user=user)
+        endpoint='main.profile', pagination=pagination, template_name='profile.html', title=gettext('Profile'),
+        form=EmptyForm(), user=user)
+
+
+@bp.route('/profile/<username>/popup')
+@login_required
+def profile_popup(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    form = EmptyForm()
+    return render_template('profile_popup.html', user=user, form=form)
 
 
 @bp.route('/edit_profile', methods=['GET', 'POST'])
@@ -72,7 +85,7 @@ def edit_profile():
 @bp.route('/follow/<username>', methods=['POST'])
 @login_required
 def follow(username):
-    if _validate_form_on_submit(EmptyForm()):
+    if EmptyForm().validate_on_submit():
         user = User.query.filter_by(username=username).first()
         if user is None:
             return flash_message_and_redirect(
@@ -94,7 +107,7 @@ def follow(username):
 @bp.route('/unfollow/<username>', methods=['POST'])
 @login_required
 def unfollow(username):
-    if _validate_form_on_submit(EmptyForm()):
+    if EmptyForm().validate_on_submit():
         user = User.query.filter_by(username=username).first()
         if user is None:
             return flash_message_and_redirect(
@@ -116,8 +129,10 @@ def unfollow(username):
 @bp.route('/explore')
 @login_required
 def explore():
+    pagination = Post.query.order_by(Post.timestamp.desc()).paginate(
+        request.args.get('page', 1, type=int), current_app.config['POSTS_PER_PAGE'], False)
     return _render_template_with_pagination(
-        endpoint='main.explore', template_name='explore.html', title=gettext('Explore'))
+        endpoint='main.explore', pagination=pagination, template_name='explore.html', title=gettext('Explore'))
 
 
 @bp.route('/translate', methods=['POST'])
@@ -139,7 +154,7 @@ def search():
     try:
         posts, total_number_of_posts = Post.search(text_to_search, page, current_app.config['POSTS_PER_PAGE'])
     except ConnectionError:
-        return render_template('errors/503.html')
+        return render_template('errors/503.html', title='503')
     next_url = url_for(
         'main.search', q=text_to_search, page=page + 1) if total_number_of_posts > page * current_app.config[
         'POSTS_PER_PAGE'] else None
@@ -148,23 +163,67 @@ def search():
                            total_number_of_posts=total_number_of_posts, text_to_search=text_to_search)
 
 
-def _validate_form_on_submit(form):
-    form = form
-    return form.validate_on_submit()
+@bp.route('/send_message/<receiver>', methods=['GET', 'POST'])
+@login_required
+def send_message(receiver):
+    user = User.query.filter_by(username=receiver).first_or_404()
+    form = MessageForm()
+    if form.validate_on_submit():
+        message = Message(author=current_user, receiver=user, body=form.message.data)
+        user.add_notification('unread_message_count', user.count_new_messages())
+        db.session.add(message)
+        db.session.commit()
+        return flash_message_and_redirect(
+            message=gettext('Your message has been sent.'), category='success', endpoint='main.profile',
+            username=receiver)
+    return render_template('send_message.html', title=gettext('Send Message'),
+                           form=form, receiver=receiver)
 
 
-def _render_template_with_pagination(*, endpoint, template_name, title, form=None, user=None):
-    page = request.args.get('page', 1, type=int)
-    if endpoint == 'main.index':
-        posts = current_user.followed_posts().paginate(page, current_app.config['POSTS_PER_PAGE'], False)
-    elif endpoint == 'main.profile':
-        posts = user.posts.order_by(Post.timestamp.desc()).paginate(page, current_app.config['POSTS_PER_PAGE'], False)
-    else:
-        posts = Post.query.order_by(Post.timestamp.desc()).paginate(page, current_app.config['POSTS_PER_PAGE'], False)
+@bp.route('/messages')
+@login_required
+def messages():
+    current_user.last_message_read_time = datetime.utcnow()
+    current_user.add_notification('unread_message_count', 0)
+    db.session.commit()
+    pagination = current_user.messages_received.order_by(
+        Message.timestamp.desc()).paginate(
+        request.args.get('page', 1, type=int), current_app.config['POSTS_PER_PAGE'], False)
+    return _render_template_with_pagination(
+        endpoint='main.messages', pagination=pagination, template_name='messages.html', title=gettext('Messages'))
+
+
+@bp.route('/notifications')
+@login_required
+def notifications():
+    since = request.args.get('since', 0.0, type=float)
+    notifications = current_user.notifications.filter(
+        Notification.timestamp > since).order_by(Notification.timestamp)
+    return jsonify([{
+        'name': notification.name,
+        'data': notification.get_data(),
+        'timestamp': notification.timestamp
+    } for notification in notifications])
+
+
+@bp.route('/export_posts')
+@login_required
+def export_posts():
+    try:
+        if current_user.get_task_in_progress('export_posts'):
+            flash(gettext('An export task is currently in progress'))
+        current_user.launch_task('export_posts', gettext('Exporting posts...'))
+        db.session.commit()
+        return redirect(url_for('main.profile', username=current_user.username))
+    except ConnectionError:
+        return render_template('errors/503.html', title='503')
+
+
+def _render_template_with_pagination(*, endpoint, pagination, template_name, title, form=None, user=None):
     next_url = url_for(
-        endpoint, page=posts.next_num, username=user.username if user else None) if posts.has_next else None
+        endpoint, page=pagination.next_num, username=user.username if user else None) if pagination.has_next else None
     prev_url = url_for(
-        endpoint, page=posts.prev_num, username=user.username if user else None) if posts.has_prev else None
+        endpoint, page=pagination.prev_num, username=user.username if user else None) if pagination.has_prev else None
     return render_template(
-        template_name, title=title, posts=posts.items, next_url=next_url,
-        prev_url=prev_url, form=form, user=user, pagination=posts)
+        template_name, title=title, posts=pagination.items, next_url=next_url,
+        prev_url=prev_url, form=form, user=user, pagination=pagination)

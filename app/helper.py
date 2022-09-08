@@ -17,4 +17,3 @@ def flash_message_and_redirect(*, message: str, endpoint: str, category: str = '
     if endpoint == 'main.profile':
         return redirect(url_for(endpoint, username=username))
     return redirect(url_for(endpoint))
-
